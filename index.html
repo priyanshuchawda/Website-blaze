@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Team Blaze | AI & Full-Stack Development Solutions</title>
+    <meta name="title" content="Team Blaze | AI & Full-Stack Development Solutions">
+    <meta name="description" content="Expert team of AI & Full-Stack Developers building intelligent solutions for tomorrow's challenges. We specialize in AI development, web applications, and custom software solutions." />
+    <meta name="keywords" content="Team Blaze, AI development, full-stack development, web applications, machine learning, software solutions, React, Node.js, Python, TensorFlow">
+    <meta name="author" content="Team Blaze">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://teamblaze.dev/" />
+    <meta property="og:title" content="Team Blaze | AI & Full-Stack Development Solutions" />
+    <meta property="og:description" content="Expert team of AI & Full-Stack Developers building intelligent solutions for tomorrow's challenges. We specialize in AI development, web applications, and custom software solutions." />
+    <meta property="og:image" content="/assets/team-blaze-og-image.jpg" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://teamblaze.dev/" />
+    <meta property="twitter:title" content="Team Blaze | AI & Full-Stack Development Solutions" />
+    <meta property="twitter:description" content="Expert team of AI & Full-Stack Developers building intelligent solutions for tomorrow's challenges. We specialize in AI development, web applications, and custom software solutions." />
+    <meta property="twitter:image" content="/assets/team-blaze-og-image.jpg" />
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0ea5e9">
+    <meta name="msapplication-TileColor" content="#0ea5e9">
+    <meta name="theme-color" content="#ffffff">
+    
+    <!-- Preload Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" as="image" href="/assets/team-blaze-logo.svg">
+    
+    <!-- Modern Browser Support -->
+    <script type="module">
+      document.documentElement.classList.add('js-enabled');
+    </script>
+    
+    <!-- Handle GitHub Pages SPA routing -->
+    <script>
+      (function() {
+        // Get the URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const path = urlParams.get('path');
+        
+        // If we have a path param, use it for routing
+        if (path) {
+          // Remove the query string and replace with the path
+          const url = window.location.protocol + '//' + 
+                     window.location.host + 
+                     window.location.pathname + 
+                     (path.startsWith('/') ? path : '/' + path);
+                     
+          // We use replaceState to avoid adding browser history entries
+          window.history.replaceState(null, null, url);
+        }
+      })();
+    </script>
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Team Blaze",
+        "url": "https://teamblaze.dev",
+        "logo": "https://teamblaze.dev/assets/team-blaze-logo.svg",
+        "description": "Expert team of AI & Full-Stack Developers building intelligent solutions for tomorrow's challenges.",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "contact@teamblaze.dev",
+          "contactType": "customer service"
+        },
+        "sameAs": [
+          "https://github.com/teamblaze",
+          "https://linkedin.com/company/teamblaze",
+          "https://twitter.com/teamblaze"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Polyfill for older browsers -->
+    <script nomodule>
+      document.documentElement.classList.add('no-js');
+    </script>
+    
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
