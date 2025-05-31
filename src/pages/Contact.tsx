@@ -15,7 +15,7 @@ const Contact: React.FC = () => {
     email: '',
     message: '',
   });
-  
+  //
   const [status, setStatus] = useState({
     submitted: false,
     success: false,
