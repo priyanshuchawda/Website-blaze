@@ -14,7 +14,7 @@ function App() {
   return (
     <ThemeProvider>
       <HashRouter>
-        <div className="min-h-screen bg-gray-50 dark:bg-dark-300 text-gray-900 dark:text-white transition-colors duration-300">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-black to-slate-900 text-white">
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />

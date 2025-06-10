@@ -1,183 +1,196 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Github, Linkedin, Send, ArrowRight } from 'lucide-react';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
+import { Github, Linkedin, Send, ArrowRight, Code, Brain, Zap } from 'lucide-react';
 import { teamMembers } from '../../data/team';
-import SectionHeading from '../UI/SectionHeading';
 import Button from '../UI/Button';
 
 const TeamSection: React.FC = () => {
-  // Staggered animation controls
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
   const containerVariants = {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: 0.15
+        staggerChildren: 0.2
       }
     }
   };
 
   const cardVariants = {
     hidden: { 
-      y: 50, 
-      opacity: 0 
+      y: 100, 
+      opacity: 0,
+      rotateX: -15
     },
     visible: { 
       y: 0, 
       opacity: 1,
+      rotateX: 0,
       transition: {
         type: "spring",
         stiffness: 100,
-        damping: 12
+        damping: 15,
+        duration: 0.8
       }
-    }
-  };
-  
-  const skillItemVariants = {
-    hidden: { opacity: 0, scale: 0.5 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
-      transition: { type: "spring", stiffness: 300, damping: 20 }
     }
   };
 
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-gray-100 dark:from-dark-300 dark:to-dark-200">
-      <div className="container mx-auto px-6 md:px-12">
-        <SectionHeading
-          title="Meet the Team"
-          subtitle="Get to know the innovative minds behind Team Blaze who are passionate about creating impactful technology solutions"
-          centerTitle={true}
-          withLine={true}
-          size="lg"
-        />
+    <section className="relative py-32 bg-gradient-to-b from-black via-slate-900 to-black overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-red-500/5 rounded-full blur-3xl" />
+      </div>
+      
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-20"
+        >
+          <h2 className="text-5xl md:text-7xl font-black mb-6">
+            <span className="text-white">MEET THE</span>
+            <br />
+            <span className="bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 bg-clip-text text-transparent">
+              REBELS
+            </span>
+          </h2>
+          
+          <p className="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed">
+            The masterminds behind the magic. Each bringing their own flavor of genius 
+            to create solutions that <span className="text-orange-400 font-semibold">defy expectations</span>.
+          </p>
+        </motion.div>
         
+        {/* Team Grid */}
         <motion.div 
+          ref={ref}
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16 max-w-6xl mx-auto"
+          animate={isInView ? "visible" : "hidden"}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto"
         >
-          {teamMembers.map((member) => (
+          {teamMembers.map((member, index) => (
             <motion.div
               key={member.id}
               variants={cardVariants}
-              className="group"
+              whileHover={{ 
+                scale: 1.02,
+                rotateY: 5,
+                transition: { duration: 0.3 }
+              }}
+              className="group perspective-1000"
             >
-              <div className="bg-white dark:bg-dark-100 rounded-2xl overflow-hidden shadow-elevation-2 hover:shadow-elevation-3 transition-all duration-500">
-                <div className="relative overflow-hidden">
-                  {/* Image overlay with gradient */}
-                  <div className="relative h-64 sm:h-80 overflow-hidden">
-                    <motion.img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      initial={{ scale: 1.2 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.7 }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                  </div>
-                  
-                  {/* Member info overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <motion.div
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.3, duration: 0.5 }}
-                    >
-                      <div className="flex items-center mb-2">
-                        <span className="h-1 w-8 bg-primary-500 rounded-full mr-3"></span>
-                        <span className="uppercase text-sm font-semibold tracking-wider text-primary-300">
-                          {member.subtitle}
-                        </span>
-                      </div>
-                      
-                      <h3 className="text-2xl sm:text-3xl font-bold mb-1 font-display">
-                        {member.name}
-                      </h3>
-                      
-                      <p className="text-gray-200 text-lg">
-                        {member.role}
-                      </p>
-                    </motion.div>
-                  </div>
-                </div>
+              <div className="relative h-full">
+                {/* Card Background with Glow */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 rounded-3xl backdrop-blur-sm border border-white/20 group-hover:border-orange-500/30 transition-all duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-red-500/0 group-hover:from-orange-500/10 group-hover:to-red-500/10 rounded-3xl transition-all duration-500" />
                 
-                <div className="p-6 sm:p-8">
-                  <div className="mb-6 text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {member.bio}
+                <div className="relative p-8 h-full">
+                  {/* Member Image */}
+                  <div className="relative mb-8">
+                    <div className="relative w-32 h-32 mx-auto">
+                      <motion.div
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ duration: 0.3 }}
+                        className="w-full h-full rounded-2xl overflow-hidden border-4 border-gradient-to-r from-orange-500 to-red-500 shadow-2xl shadow-orange-500/25"
+                      >
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </motion.div>
+                      
+                      {/* Status Indicator */}
+                      <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full border-4 border-black flex items-center justify-center">
+                        <div className="w-3 h-3 bg-white rounded-full animate-pulse" />
+                      </div>
+                    </div>
                   </div>
                   
+                  {/* Member Info */}
+                  <div className="text-center mb-6">
+                    <h3 className="text-2xl md:text-3xl font-black text-white mb-2 group-hover:bg-gradient-to-r group-hover:from-orange-400 group-hover:to-red-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                      {member.name}
+                    </h3>
+                    
+                    <div className="flex items-center justify-center space-x-2 mb-3">
+                      <div className="h-px bg-gradient-to-r from-transparent via-orange-500 to-transparent flex-grow" />
+                      <span className="text-orange-400 font-bold text-sm tracking-wider uppercase">
+                        {member.subtitle}
+                      </span>
+                      <div className="h-px bg-gradient-to-r from-transparent via-orange-500 to-transparent flex-grow" />
+                    </div>
+                    
+                    <p className="text-gray-300 text-lg font-semibold">
+                      {member.role}
+                    </p>
+                  </div>
+                  
+                  {/* Bio */}
+                  <p className="text-gray-400 leading-relaxed mb-8 text-center">
+                    {member.bio}
+                  </p>
+                  
+                  {/* Skills */}
                   <div className="mb-8">
-                    <h4 className="text-sm uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400 mb-3">
-                      Expertise
-                    </h4>
-                    <motion.div 
-                      className="flex flex-wrap gap-2"
-                      variants={containerVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                    >
-                      {member.skills.map((skill) => (
+                    <div className="flex flex-wrap justify-center gap-2">
+                      {member.skills.slice(0, 3).map((skill, skillIndex) => (
                         <motion.span
                           key={skill}
-                          variants={skillItemVariants}
-                          className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/30 dark:to-secondary-900/30 text-primary-700 dark:text-primary-300 border border-primary-200 dark:border-primary-700/30 shadow-soft-sm"
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.5 + skillIndex * 0.1 }}
+                          className="px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-orange-500/20 to-red-500/20 text-orange-300 border border-orange-500/30"
                         >
                           {skill}
                         </motion.span>
                       ))}
-                    </motion.div>
+                      {member.skills.length > 3 && (
+                        <span className="px-3 py-1 rounded-full text-sm font-bold bg-gray-800 text-gray-400 border border-gray-700">
+                          +{member.skills.length - 3}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   
-                  <div className="flex justify-between items-center">
-                    <div className="flex space-x-4">
-                      <motion.a
-                        href={`https://github.com/${member.social.github}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 rounded-full bg-gray-100 dark:bg-dark-200 text-gray-700 dark:text-gray-300 hover:bg-primary-100 hover:text-primary-600 dark:hover:bg-primary-900/30 dark:hover:text-primary-400 transition-colors"
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        whileTap={{ scale: 0.9 }}
-                        aria-label={`${member.name}'s GitHub profile`}
-                      >
-                        <Github size={18} />
-                      </motion.a>
-                      <motion.a
-                        href={`https://linkedin.com/in/${member.social.linkedin}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 rounded-full bg-gray-100 dark:bg-dark-200 text-gray-700 dark:text-gray-300 hover:bg-primary-100 hover:text-primary-600 dark:hover:bg-primary-900/30 dark:hover:text-primary-400 transition-colors"
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        whileTap={{ scale: 0.9 }}
-                        aria-label={`${member.name}'s LinkedIn profile`}
-                      >
-                        <Linkedin size={18} />
-                      </motion.a>
-                      <motion.a
-                        href={`https://t.me/${member.social.telegram}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 rounded-full bg-gray-100 dark:bg-dark-200 text-gray-700 dark:text-gray-300 hover:bg-primary-100 hover:text-primary-600 dark:hover:bg-primary-900/30 dark:hover:text-primary-400 transition-colors"
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        whileTap={{ scale: 0.9 }}
-                        aria-label={`${member.name}'s Telegram`}
-                      >
-                        <Send size={18} />
-                      </motion.a>
+                  {/* Social Links & CTA */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex space-x-3">
+                      {[
+                        { icon: Github, url: `https://github.com/${member.social.github}`, color: 'hover:text-purple-400' },
+                        { icon: Linkedin, url: `https://linkedin.com/in/${member.social.linkedin}`, color: 'hover:text-blue-400' },
+                        { icon: Send, url: `https://t.me/${member.social.telegram}`, color: 'hover:text-cyan-400' }
+                      ].map((social, socialIndex) => (
+                        <motion.a
+                          key={socialIndex}
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.2, rotate: 10 }}
+                          whileTap={{ scale: 0.9 }}
+                          className={`p-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 ${social.color} transition-all duration-300 border border-white/10 hover:border-white/20`}
+                        >
+                          <social.icon size={18} />
+                        </motion.a>
+                      ))}
                     </div>
                     
                     <Button
                       to={`/team/${member.id}`}
-                      variant="text"
+                      variant="ghost"
                       size="sm"
                       icon={<ArrowRight size={16} />}
                       iconPosition="right"
+                      className="text-orange-400 hover:text-white"
                     >
-                      View Profile
+                      Profile
                     </Button>
                   </div>
                 </div>
@@ -186,17 +199,40 @@ const TeamSection: React.FC = () => {
           ))}
         </motion.div>
         
-        <div className="text-center mt-16">
-          <Button
-            to="/team"
-            variant="outline"
-            size="lg"
-            shadow={true}
-            rounded={true}
-          >
-            Meet the Entire Team
-          </Button>
-        </div>
+        {/* Bottom CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="text-center mt-20"
+        >
+          <div className="inline-block p-8 bg-gradient-to-r from-orange-500/10 to-red-500/10 rounded-3xl border border-orange-500/20 backdrop-blur-sm">
+            <div className="flex items-center justify-center space-x-4 mb-4">
+              <Code className="w-8 h-8 text-orange-400" />
+              <Brain className="w-8 h-8 text-red-400" />
+              <Zap className="w-8 h-8 text-pink-400" />
+            </div>
+            
+            <h3 className="text-3xl font-black text-white mb-4">
+              Want to join the rebellion?
+            </h3>
+            
+            <p className="text-gray-400 mb-6 max-w-2xl">
+              We're always looking for exceptional talent who aren't afraid to challenge the status quo.
+            </p>
+            
+            <Button
+              to="/team"
+              variant="blaze"
+              size="lg"
+              icon={<ArrowRight size={20} />}
+              iconPosition="right"
+              glow
+            >
+              See Full Team
+            </Button>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

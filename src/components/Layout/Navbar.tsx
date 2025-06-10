@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
-import { Menu, X, Moon, Sun } from 'lucide-react';
+import { Menu, X, Zap } from 'lucide-react';
 
 const navItems = [
   { label: 'Home', path: '/' },
   { label: 'Projects', path: '/projects' },
+  { label: 'Team', path: '/team' },
   { label: 'Skills', path: '/skills' },
   { label: 'Contact', path: '/contact' },
-  { label: 'Resume', path: '/resume' },
 ];
 
 const Navbar: React.FC = () => {
@@ -28,103 +28,54 @@ const Navbar: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Close mobile menu when route changes
     setIsMenuOpen(false);
   }, [location]);
   
-  // Animation variants
-  const logoVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: { duration: 0.5 } 
-    }
-  };
-  
-  const navItemVariants = {
-    hidden: { opacity: 0, y: -10 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 0.1 * i,
-        duration: 0.3,
-      }
-    })
-  };
-  
-  const mobileMenuVariants = {
-    closed: { 
-      opacity: 0, 
-      height: 0,
-      transition: {
-        duration: 0.3,
-        when: "afterChildren"
-      }
-    },
-    open: { 
-      opacity: 1, 
-      height: 'auto',
-      transition: {
-        duration: 0.3,
-        when: "beforeChildren",
-        staggerChildren: 0.1
-      }
-    }
-  };
-  
-  const mobileNavItemVariants = {
-    closed: { x: -20, opacity: 0 },
-    open: { x: 0, opacity: 1 }
-  };
-
   return (
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-      className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-12 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-12 transition-all duration-500 ${
         scrolled 
-          ? 'bg-white/90 dark:bg-dark-200/95 backdrop-blur-md py-4 shadow-elevation-2' 
+          ? 'bg-black/80 backdrop-blur-xl py-4 shadow-2xl shadow-black/20 border-b border-white/10' 
           : 'bg-transparent py-6'
       }`}
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <NavLink to="/" className="flex items-center space-x-2 z-10">
-          <motion.span 
-            variants={logoVariants}
-            initial="hidden"
-            animate="visible"
-            whileHover={{ 
-              scale: 1.05, 
-              rotate: [0, -2, 2, -2, 0],
-              transition: { duration: 0.5 }
-            }}
-            whileTap={{ scale: 0.95 }}
-            className="font-bold text-2xl md:text-3xl font-display bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500 text-transparent bg-clip-text"
+        {/* Logo */}
+        <NavLink to="/" className="flex items-center space-x-3 z-10 group">
+          <motion.div
+            whileHover={{ rotate: 180, scale: 1.1 }}
+            transition={{ duration: 0.3 }}
+            className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center shadow-lg shadow-orange-500/25"
           >
-            Team Blaze
+            <Zap className="w-6 h-6 text-white" strokeWidth={2.5} />
+          </motion.div>
+          
+          <motion.span 
+            className="font-black text-2xl md:text-3xl bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent group-hover:from-orange-400 group-hover:to-red-500 transition-all duration-300"
+          >
+            TEAM BLAZE
           </motion.span>
         </NavLink>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-8">
+        <nav className="hidden md:flex items-center space-x-8">
           {navItems.map((item, i) => (
             <motion.div
               key={item.path}
-              custom={i}
-              variants={navItemVariants}
-              initial="hidden"
-              animate="visible"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
             >
               <NavLink
                 to={item.path}
                 className={({ isActive }) => 
-                  `relative font-medium text-sm md:text-base transition-all hover:text-primary-500 dark:hover:text-primary-400 py-2 ${
+                  `relative font-bold text-sm md:text-base transition-all duration-300 py-2 px-4 rounded-full ${
                     isActive 
-                      ? 'text-primary-500 dark:text-primary-400' 
-                      : 'text-gray-700 dark:text-gray-300'
+                      ? 'text-white bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/30' 
+                      : 'text-gray-300 hover:text-white hover:bg-white/5'
                   }`
                 }
               >
@@ -132,11 +83,11 @@ const Navbar: React.FC = () => {
                   <>
                     {item.label}
                     {isActive && (
-                      <motion.span
+                      <motion.div
                         layoutId="navbar-indicator"
-                        className="absolute bottom-[-5px] left-0 right-0 h-[2px] bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full"
-                        initial={{ opacity: 0, width: '0%', left: '50%' }}
-                        animate={{ opacity: 1, width: '100%', left: '0%' }}
+                        className="absolute inset-0 bg-gradient-to-r from-orange-500/30 to-red-500/30 rounded-full border border-orange-500/50"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                       />
                     )}
@@ -145,97 +96,102 @@ const Navbar: React.FC = () => {
               </NavLink>
             </motion.div>
           ))}
-        </nav>
-        
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, duration: 0.3 }}
-          className="flex items-center space-x-4"
-        >
+          
+          {/* Theme Toggle */}
           <motion.button
             onClick={toggleTheme}
             whileHover={{ scale: 1.1, rotate: 180 }}
             whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0.4 }}
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-100 transition-colors shadow-soft-sm"
+            className="p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/30 transition-all duration-300"
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
           >
-            {theme === 'dark' ? (
-              <Sun size={20} className="text-yellow-400" />
+            <div className="w-5 h-5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full" />
+          </motion.button>
+        </nav>
+        
+        {/* Mobile Menu Button */}
+        <motion.button
+          className="md:hidden p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/30 transition-all duration-300"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          whileTap={{ scale: 0.9 }}
+          aria-label="Toggle menu"
+        >
+          <AnimatePresence mode="wait">
+            {isMenuOpen ? (
+              <motion.div
+                key="close"
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <X size={24} className="text-white" />
+              </motion.div>
             ) : (
-              <Moon size={20} className="text-primary-600" />
+              <motion.div
+                key="menu"
+                initial={{ rotate: 90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: -90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Menu size={24} className="text-white" />
+              </motion.div>
             )}
-          </motion.button>
-          
-          {/* Mobile Menu Button */}
-          <motion.button
-            className="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-100 transition-colors"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Toggle menu"
-          >
-            <AnimatePresence mode="wait">
-              {isMenuOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <X size={24} className="text-primary-500 dark:text-primary-400" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Menu size={24} className="text-gray-700 dark:text-gray-300" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.button>
-        </motion.div>
+          </AnimatePresence>
+        </motion.button>
       </div>
 
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            variants={mobileMenuVariants}
-            initial="closed"
-            animate="open"
-            exit="closed"
-            className="md:hidden bg-white/95 dark:bg-dark-200/95 backdrop-blur-md mt-4 rounded-xl shadow-elevation-3 overflow-hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-black/90 backdrop-blur-xl mt-4 rounded-2xl border border-white/10 overflow-hidden"
           >
             <nav className="flex flex-col py-4">
-              {navItems.map((item) => (
-                <motion.div key={item.path} variants={mobileNavItemVariants}>
+              {navItems.map((item, index) => (
+                <motion.div 
+                  key={item.path}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
                   <NavLink
                     to={item.path}
                     className={({ isActive }) =>
-                      `px-6 py-3 text-lg font-medium transition-colors flex items-center ${
+                      `px-6 py-4 text-lg font-bold transition-all duration-300 flex items-center ${
                         isActive
-                          ? 'text-primary-500 dark:text-primary-400 bg-gray-50/80 dark:bg-dark-100/80'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50/50 dark:hover:bg-dark-100/50'
+                          ? 'text-white bg-gradient-to-r from-orange-500/20 to-red-500/20 border-r-4 border-orange-500'
+                          : 'text-gray-300 hover:text-white hover:bg-white/5'
                       }`
                     }
                   >
-                    {({ isActive }) => (
-                      <>
-                        <span className="flex-grow">{item.label}</span>
-                        {isActive && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-primary-500 dark:bg-primary-400 mr-2" />
-                        )}
-                      </>
+                    <span className="flex-grow">{item.label}</span>
+                    {({ isActive }) => isActive && (
+                      <div className="w-2 h-2 rounded-full bg-gradient-to-r from-orange-500 to-red-500" />
                     )}
                   </NavLink>
                 </motion.div>
               ))}
+              
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navItems.length * 0.1 }}
+                className="px-6 py-4"
+              >
+                <button
+                  onClick={toggleTheme}
+                  className="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors"
+                >
+                  <div className="w-5 h-5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full" />
+                  <span className="font-bold">Toggle Theme</span>
+                </button>
+              </motion.div>
             </nav>
           </motion.div>
         )}
